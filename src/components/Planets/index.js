@@ -1,27 +1,28 @@
 import React, { Fragment } from "react"
 import Planet from "./Planet"
 
-
+async function getPlanets() {
+  let response = await fetch('http://localhost:3000/api/planets.json')
+  let data = response.json()
+  return data
+}
 
 class Planets extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      planets: [
-        {
-          name: 'Urano', 
-          description: "Urano (Úrano em Portugal) é o sétimo planeta a partir do Sol, o terceiro maior e o quarto mais massivo dos oito planetas do Sistema Solar. Foi nomeado em homenagem ao deus grego do céu, Urano.",
-          link: 'https://pt.wikipedia.org/wiki/Urano_(planeta)',
-          img_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/280px-Uranus2.jpg",
-        },
-        {
-          name: 'Vênus',
-          description: "Vénus (português europeu) ou Vênus (português brasileiro) (AO 1990: Vénus ou Vênus)[1] é o segundo planeta do Sistema Solar em ordem de distância a partir do Sol, orbitando-o a cada 224,7 dias.",
-          link: 'https://pt.wikipedia.org/wiki/Venus_(planeta)',
-          img_url: "https://upload.wikimedia.org/wikipedia/commons/f/ff/PIA23791-Venus-RealAndEnhancedContrastViews-20200608_%28cropped2%29.jpg"
-        }
-      ]
+      planets: []
     }
+  }
+
+
+
+  componentDidMount() {
+    getPlanets().then(data => {
+      this.setState({
+        planets: data['planets']
+      })
+    })
   }
 
   removelast = () => {
