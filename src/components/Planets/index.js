@@ -15,8 +15,6 @@ class Planets extends React.Component {
     }
   }
 
-
-
   componentDidMount() {
     getPlanets().then(data => {
       this.setState({
@@ -41,7 +39,6 @@ class Planets extends React.Component {
     })
   }
 
-
   render() {
     return (
       <Fragment>
@@ -54,6 +51,7 @@ class Planets extends React.Component {
           description={planet.description}
           link={planet.link}
           img_url={planet.img_url}
+          id={planet.id}
           />
         )}
       </Fragment>
