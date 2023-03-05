@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React, { Fragment, useState, useEffect } from "react"
 import Planet from "./Planet"
 
 async function getPlanets() {
@@ -7,56 +7,46 @@ async function getPlanets() {
   return data
 }
 
-class Planets extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      planets: []
-    }
-  }
 
-  componentDidMount() {
+const Planets = () => {
+
+  const [planets, setPlanets] = useState([])
+
+  useEffect(() => {
     getPlanets().then(data => {
-      this.setState({
-        planets: data['planets']
-      })
+      setPlanets(data['planets'])
     })
-  }
+  },[])
 
-  removelast = () => {
-    let new_planets = [...this.state.planets]
+  const removelast = () => {
+    let new_planets = [...planets]
     new_planets.pop()
-    this.setState({
-      planets: new_planets
-    })
+    setPlanets(new_planets)
   }
 
-  duplicateLast = () => {
-    let duplicated = this.state.planets[this.state.planets.length - 1]
-    let new_planets = [...this.state.planets, duplicated]
-    this.setState({
-      planets: new_planets
-    })
+  const duplicateLast = () => {
+    let duplicated = planets[planets.length - 1]
+    let new_planets = [...planets, duplicated]
+    setPlanets(new_planets)
   }
 
-  render() {
-    return (
-      <Fragment>
-        <h1>Planet list</h1>
-        <button onClick={this.removelast}>Remover último</button>
-        <button onClick={this.duplicateLast}>Duplicar o último</button>
-        {this.state.planets.map(planet => 
-          <Planet 
-          name={planet.name}
-          description={planet.description}
-          link={planet.link}
-          img_url={planet.img_url}
-          id={planet.id}
-          />
-        )}
-      </Fragment>
-    )
-  }
+  return (
+    <Fragment>
+      <h1>Planet list</h1>
+      <button onClick={removelast}>Remover último</button>
+      <button onClick={duplicateLast}>Duplicar o último</button>
+      {planets.map((planet, index) => 
+        <Planet 
+        name={planet.name}
+        description={planet.description}
+        link={planet.link}
+        img_url={planet.img_url}
+        id={planet.id}
+        key={index}
+        />
+      )}
+    </Fragment>
+  )
 }
 
 export default Planets

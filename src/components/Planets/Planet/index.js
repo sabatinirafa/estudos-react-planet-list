@@ -2,6 +2,11 @@ import GreyImg from '../../shared/grey-img'
 import Description from '../../shared/description'
 import React from 'react'
 
+let getSatellites = async function (id) {
+  let response = await fetch(`http://localhost:3000/api/${id}.json`)
+  let data = response.json()
+  return data
+}
 
 class Planet extends React.Component {
   constructor(props) {
@@ -11,14 +16,8 @@ class Planet extends React.Component {
     }
   }
 
-  getSatellites = async function () {
-    let response = await fetch(`http://localhost:3000/api/${this.props.id}.json`)
-    let data = response.json()
-    return data
-  }
-
   componentDidMount() {
-    this.getSatellites().then(data => {
+    getSatellites(this.props.id).then(data => {
       this.setState({
         satellites: data['satellites']
       })
@@ -36,9 +35,12 @@ class Planet extends React.Component {
         <GreyImg 
           img_url={this.props.img_url}
         />
-        {this.state.satellites.map(satellite => 
-          <p>{satellite.name}</p>
-        )}
+        <h4>Luas do satélite</h4>
+        <ul>
+          {this.state.satellites.map((satellite, index) => 
+            <li key={index}>{satellite.name}</li>
+          )}
+        </ul>
         <hr/>
       </div>
     )
