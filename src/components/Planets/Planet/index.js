@@ -19,6 +19,22 @@ let getSatellites = async function (id) {
 
 const Planet = (props) => {
   const [satellites, setSatellites] = useState([])
+  const [satellite, setSatellite] = useState('')
+
+  const handleChange = (ev) => {
+    setSatellite(ev.target.value)
+  }
+
+  const handleSubmit = (ev) => {
+    if (satellite !== '') {
+      setSatellites([
+        ...satellites, 
+        {name: satellite}
+      ])
+      ev.preventDefault()
+      setSatellite('')
+    } 
+  }
 
   useEffect(() => {
     getSatellites(props.id).then(data => {
@@ -42,6 +58,12 @@ const Planet = (props) => {
           <li key={index}>{satellite.name}</li>
         )}
       </ul>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='satellite'>Add new satellite: </label>
+        <input type='text' id='satellites' name='satellites' onChange={handleChange} value={satellite}/>
+        <br/>
+        <input type='submit'/>
+      </form>
       <hr/>
     </div>
   )
