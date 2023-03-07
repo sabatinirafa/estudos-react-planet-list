@@ -1,6 +1,7 @@
 import GreyImg from '../../shared/grey-img'
 import Description from '../../shared/description'
 import React, { useEffect, useState } from 'react'
+import Form from './Form'
 
 let getSatellites = async function (id) {
   let response = await fetch(`http://localhost:3000/api/${id}.json`)
@@ -8,39 +9,19 @@ let getSatellites = async function (id) {
   return data
 }
 
-// componentDidMount() {
-//   getSatellites(this.props.id).then(data => {
-//     this.setState({
-//       satellites: data['satellites']
-//     })
-//   })
-// }
-
 
 const Planet = (props) => {
   const [satellites, setSatellites] = useState([])
-  const [satellite, setSatellite] = useState('')
-
-  const handleChange = (ev) => {
-    setSatellite(ev.target.value)
-  }
-
-  const handleSubmit = (ev) => {
-    if (satellite !== '') {
-      setSatellites([
-        ...satellites, 
-        {name: satellite}
-      ])
-      ev.preventDefault()
-      setSatellite('')
-    } 
-  }
 
   useEffect(() => {
     getSatellites(props.id).then(data => {
       setSatellites(data['satellites'])
     })
   },[])
+
+  const addSatellite = (new_satellite) => {
+    setSatellites([...satellites, {name: new_satellite}])
+  }
 
   return (
     <div>
@@ -58,12 +39,7 @@ const Planet = (props) => {
           <li key={index}>{satellite.name}</li>
         )}
       </ul>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='satellite'>Add new satellite: </label>
-        <input type='text' id='satellites' name='satellites' onChange={handleChange} value={satellite}/>
-        <br/>
-        <input type='submit'/>
-      </form>
+      <Form addSatellite={addSatellite}/>
       <hr/>
     </div>
   )
