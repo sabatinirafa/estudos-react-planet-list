@@ -1,12 +1,5 @@
 import React, {Fragment, useState} from "react"
 
-const initialState = {
-  name: '',
-  description: '',
-  link: '',
-  img_url: ''
-}
-
 
 const Form = (props) => {
 
