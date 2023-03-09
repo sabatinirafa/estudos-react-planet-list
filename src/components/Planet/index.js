@@ -2,20 +2,26 @@ import GreyImg from '../shared/grey-img'
 import Description from '../shared/description'
 import React, { useEffect, useState } from 'react'
 import Form from './Form'
+import { useParams } from 'react-router-dom'
 
-let getSatellites = async function (id) {
+let getPlanet = async function (id) {
   let response = await fetch(`http://localhost:3000/api/${id}.json`)
   let data = response.json()
   return data
 }
 
 
-const Planet = (props) => {
+const Planet = () => {
   const [satellites, setSatellites] = useState([])
+  const [planet, setPlanet] = useState({})
+
+
+  let {id} = useParams()
 
   useEffect(() => {
-    getSatellites(props.id).then(data => {
+    getPlanet(id).then(data => {
       setSatellites(data['satellites'])
+      setPlanet(data['data'])
     })
   },[])
 
@@ -25,13 +31,13 @@ const Planet = (props) => {
 
   return (
     <div>
-      <h4>{props.name}</h4>
+      <h4>{planet.name}</h4>
       <Description
-        description={props.description}
-        link={props.link}
+        description={planet.description}
+        link={planet.link}
       />
       <GreyImg 
-        img_url={props.img_url}
+        img_url={planet.img_url}
       />
       <h4>Luas do satélite</h4>
       <ul>

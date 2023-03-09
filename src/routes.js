@@ -7,7 +7,7 @@ const AppRoutes = () => (
   <BrowserRouter>
     <Routes>
       <Route exact path='/' element={<PlanetsScreen/>}/>
-      <Route exact path='/planet' element={<PlanetScreen/>}/>
+      <Route exact path='/planet/:id' element={<PlanetScreen/>}/>
     </Routes>
   </BrowserRouter>
 )
